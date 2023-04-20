@@ -90,8 +90,7 @@ fun ClassSettingScene(
                         }
                     },
                     shape = RoundedCornerShape(8.dp),
-                    backgroundColor = MaterialTheme.colorScheme.inverseOnSurface,
-                    dialogProvider = MyDialogProvider
+                    backgroundColor = MaterialTheme.colorScheme.inverseOnSurface
                 )
             }
             LazyVerticalGrid(
@@ -401,8 +400,7 @@ fun EditClassScene(
                 }
             },
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = MaterialTheme.colorScheme.inverseOnSurface,
-            dialogProvider = MyDialogProvider
+            backgroundColor = MaterialTheme.colorScheme.inverseOnSurface
         )
     }
 }

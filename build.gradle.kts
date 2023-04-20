@@ -43,7 +43,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "LuckyDraw"
-            packageVersion = "1.0.1"
+            packageVersion = "1.0.2"
             macOS {
                 iconFile.set(project.file("/src/jvmMain/resources/icon_256.icns"))
             }
@@ -60,6 +60,5 @@ compose.desktop {
             obfuscate.set(true)
             configurationFiles.from(project.file("proguard-rules.pro"))
         }
-
     }
 }
