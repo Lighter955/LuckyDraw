@@ -30,8 +30,9 @@ kotlin {
                 api(compose.animation)
                 api("moe.tlaster:precompose:1.3.15")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-                implementation("com.russhwolf:multiplatform-settings:1.0.0")
-                implementation("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+                implementation("net.harawata:appdirs:1.2.1")
+                implementation("io.github.xxfast:kstore:0.5.0")
+                implementation("io.github.xxfast:kstore-file:0.5.0")
             }
         }
     }

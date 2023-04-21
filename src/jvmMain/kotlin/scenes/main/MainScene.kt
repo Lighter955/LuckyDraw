@@ -98,7 +98,6 @@ fun MainScene(
                 animationSpec = tween(durationMillis = 8000),
                 afterAnimation = { if (canAddPickCount.value) {
                     pickCount.value += 1
-                    println("pickCount: ${pickCount.value}")
                 } }
             )
             Row {

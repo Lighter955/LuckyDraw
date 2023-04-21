@@ -17,13 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.launch
 import model.Class
 import model.Group
 import moe.tlaster.precompose.navigation.Navigator
@@ -72,9 +73,12 @@ fun ClassSettingScene(
                             Spacer(Modifier.width(16.dp))
                             Button(
                                 onClick = {
-                                    classList.removeAt(dialogState.value)
-                                    appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
-                                    dialogState.value = -1
+                                    appState.scope.launch {
+                                        appState.removeClass(classList[dialogState.value])
+                                        dialogState.value = -1
+                                    }
+                                    /*classList.removeAt(dialogState.value)
+                                    appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                                 }
                             ) {
                                 MyText("确定")
@@ -144,8 +148,7 @@ fun ClassSettingScene(
 @Composable
 fun AddClassScene(
     appState: AppState,
-    onCloseRequest: () -> Unit,
-    classList: SnapshotStateList<Class> = appState.classList
+    onCloseRequest: () -> Unit
 ) {
     val className = remember { mutableStateOf("") }
     val groupsString = remember { mutableStateOf("") }
@@ -215,8 +218,11 @@ fun AddClassScene(
                             name = className.value,
                             groups = groups
                         )
-                        classList.add(newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
+                        /*classList.add(newClass)
+                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
+                        appState.scope.launch {
+                            appState.addClass(newClass)
+                        }
                         onCloseRequest()
                     },
                     enabled = !isClassNameError.value && !isGroupsStringError.value && className.value.isNotBlank()
@@ -354,9 +360,12 @@ fun EditClassScene(
                             name = className.value,
                             groups = groupList
                         )
-                        classList.removeAt(index)
+                        /*classList.removeAt(index)
                         classList.add(index, newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
+                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
+                        appState.scope.launch {
+                            appState.updateClass(index, newClass)
+                        }
                         onCloseRequest()
                     },
                     enabled = className.value.isNotBlank()
@@ -382,9 +391,12 @@ fun EditClassScene(
                     Spacer(Modifier.width(16.dp))
                     Button(
                         onClick = {
-                            classList[index].groups.removeAt(dialogState.value)
-                            appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
-                            dialogState.value = -1
+                            /*classList[index].groups.removeAt(dialogState.value)
+                            appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
+                            appState.scope.launch {
+                                appState.removeGroup(index, dialogState.value)
+                                dialogState.value = -1
+                            }
                         }
                     ) {
                         MyText("确定")

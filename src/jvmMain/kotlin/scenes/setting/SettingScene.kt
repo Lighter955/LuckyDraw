@@ -65,9 +65,8 @@ fun SettingScene(
                     }
                     scene("/setting/class/add") {
                         AddClassScene(
-                            appState = appState,
-                            onCloseRequest = { navigator.goBack() }
-                        )
+                            appState = appState
+                        ) { navigator.goBack() }
                         currentPath.value = it.path
                     }
                     scene("/setting/class/{index}/edit") {
@@ -87,9 +86,8 @@ fun SettingScene(
                         if (index != null) {
                             AddGroupsScene(
                                 index = index,
-                                appState = appState,
-                                onCloseRequest = { navigator.goBack() }
-                            )
+                                appState = appState
+                            ) { navigator.goBack() }
                             currentPath.value = it.path
                         }
                     }
@@ -100,9 +98,8 @@ fun SettingScene(
                             EditGroupScene(
                                 classIndex = classIndex,
                                 groupIndex = groupIndex,
-                                appState = appState,
-                                onCloseRequest = { navigator.goBack() }
-                            )
+                                appState = appState
+                            ) { navigator.goBack() }
                             currentPath.value = it.path
                         }
                     }
@@ -112,9 +109,8 @@ fun SettingScene(
                     }
                     scene("/setting/questionset/add") {
                         AddQuestionSetScene(
-                            appState = appState,
-                            onCloseRequest = { navigator.goBack() }
-                        )
+                            appState = appState
+                        ) { navigator.goBack() }
                         currentPath.value = it.path
                     }
                     scene("/setting/questionset/{index}/edit") {

@@ -22,8 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.launch
 import model.Question
 import model.QuestionSet
 import moe.tlaster.precompose.navigation.Navigator
@@ -72,9 +71,12 @@ fun QuestionSetSettingScene(
                             Spacer(Modifier.width(16.dp))
                             Button(
                                 onClick = {
-                                    questionSetList.removeAt(dialogState.value)
-                                    appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))
-                                    dialogState.value = -1
+                                    /*questionSetList.removeAt(dialogState.value)
+                                    appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))*/
+                                    appState.scope.launch {
+                                        appState.removeQuestionSet(questionSetList[dialogState.value])
+                                        dialogState.value = -1
+                                    }
                                 }
                             ) {
                                 MyText("确定")
@@ -135,8 +137,7 @@ fun QuestionSetSettingScene(
 @Composable
 fun AddQuestionSetScene(
     appState: AppState,
-    onCloseRequest: () -> Unit,
-    questionSetList: SnapshotStateList<QuestionSet> = appState.questionSetList
+    onCloseRequest: () -> Unit
 ) {
     val questionSetName = remember { mutableStateOf("") }
     val questionsString = remember { mutableStateOf("") }
@@ -201,8 +202,11 @@ fun AddQuestionSetScene(
                             name = questionSetName.value,
                             questions = questions
                         )
-                        questionSetList.add(questionSet)
-                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))
+                        /*questionSetList.add(questionSet)
+                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))*/
+                        appState.scope.launch {
+                            appState.addQuestionSet(questionSet)
+                        }
                         onCloseRequest()
                     },
                     enabled = !isQuestionSetNameError.value && questionSetName.value.isNotBlank()
@@ -284,9 +288,12 @@ fun EditQuestionSetScene(
                             name = questionSetName.value,
                             questions = questions
                         )
-                        questionSetList.removeAt(index)
+                        /*questionSetList.removeAt(index)
                         questionSetList.add(index, questionSet)
-                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))
+                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))*/
+                        appState.scope.launch {
+                            appState.updateQuestionSet(index, questionSet)
+                        }
                         onCloseRequest()
                     },
                     enabled = !isQuestionSetNameError.value && questionSetName.value.isNotBlank()

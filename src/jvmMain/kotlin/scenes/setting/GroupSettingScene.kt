@@ -9,21 +9,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import model.Class
+import kotlinx.coroutines.launch
 import model.Group
 
 @Composable
 fun AddGroupsScene(
     index: Int,
     appState: AppState,
-    onCloseRequest: () -> Unit,
-    classList: SnapshotStateList<Class> = appState.classList
+    onCloseRequest: () -> Unit
 ) {
     val groupsString = remember { mutableStateOf("") }
     val isGroupsStringError = remember { mutableStateOf(false) }
@@ -73,8 +69,8 @@ fun AddGroupsScene(
                 Spacer(Modifier.width(16.dp))
                 Button(
                     onClick = {
-                        val groups = classList[index].groups
                         val groupList: MutableList<Group> = groupsString.value.toGroups()
+                        /*val groups = classList[index].groups
                         groups.addAll(groupList)
                         val newClass = Class(
                             name = classList[index].name,
@@ -82,7 +78,10 @@ fun AddGroupsScene(
                         )
                         classList.removeAt(index)
                         classList.add(index, newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
+                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
+                        appState.scope.launch {
+                            appState.addGroups(index, groupList)
+                        }
                         onCloseRequest()
                     },
                     enabled = !isGroupsStringError.value
@@ -99,8 +98,7 @@ fun EditGroupScene(
     classIndex: Int,
     groupIndex: Int,
     appState: AppState,
-    onCloseRequest: () -> Unit,
-    classList: SnapshotStateList<Class> = appState.classList
+    onCloseRequest: () -> Unit
 ) {
     val groupString = remember { mutableStateOf(appState.classList[classIndex].groups[groupIndex].formatToString()) }
     val isGroupStringError = remember { mutableStateOf(false) }
@@ -151,9 +149,12 @@ fun EditGroupScene(
                 Button(
                     onClick = {
                         val group: Group = groupString.value.toGroup()
-                        classList[classIndex].groups.removeAt(groupIndex)
+                        /*classList[classIndex].groups.removeAt(groupIndex)
                         classList[classIndex].groups.add(groupIndex, group)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))
+                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
+                        appState.scope.launch {
+                            appState.updateGroup(classIndex, groupIndex, group)
+                        }
                         onCloseRequest()
                     },
                     enabled = !isGroupStringError.value
