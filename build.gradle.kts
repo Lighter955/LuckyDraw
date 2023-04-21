@@ -44,7 +44,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "LuckyDraw"
-            packageVersion = "1.0.2"
+            packageVersion = "1.0.3"
             macOS {
                 iconFile.set(project.file("/src/jvmMain/resources/icon_256.icns"))
             }

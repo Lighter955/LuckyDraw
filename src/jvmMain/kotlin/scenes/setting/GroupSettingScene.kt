@@ -69,20 +69,11 @@ fun AddGroupsScene(
                 Spacer(Modifier.width(16.dp))
                 Button(
                     onClick = {
-                        val groupList: MutableList<Group> = groupsString.value.toGroups()
-                        /*val groups = classList[index].groups
-                        groups.addAll(groupList)
-                        val newClass = Class(
-                            name = classList[index].name,
-                            groups = groups
-                        )
-                        classList.removeAt(index)
-                        classList.add(index, newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                         appState.scope.launch {
+                            val groupList: MutableList<Group> = groupsString.value.toGroups()
                             appState.addGroups(index, groupList)
+                            onCloseRequest()
                         }
-                        onCloseRequest()
                     },
                     enabled = !isGroupsStringError.value
                 ) {
@@ -148,14 +139,11 @@ fun EditGroupScene(
                 Spacer(Modifier.width(16.dp))
                 Button(
                     onClick = {
-                        val group: Group = groupString.value.toGroup()
-                        /*classList[classIndex].groups.removeAt(groupIndex)
-                        classList[classIndex].groups.add(groupIndex, group)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                         appState.scope.launch {
+                            val group: Group = groupString.value.toGroup()
                             appState.updateGroup(classIndex, groupIndex, group)
+                            onCloseRequest()
                         }
-                        onCloseRequest()
                     },
                     enabled = !isGroupStringError.value
                 ) {

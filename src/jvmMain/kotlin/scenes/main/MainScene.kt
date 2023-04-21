@@ -101,7 +101,7 @@ fun MainScene(
                 } }
             )
             Row {
-                if (groups.size > 1) {
+                if (pickCount.value != groups.size) {
                     TextButton(
                         onClick = { navigateBack() }
                     ) {

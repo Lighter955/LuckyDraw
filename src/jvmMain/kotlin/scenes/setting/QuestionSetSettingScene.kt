@@ -202,8 +202,6 @@ fun AddQuestionSetScene(
                             name = questionSetName.value,
                             questions = questions
                         )
-                        /*questionSetList.add(questionSet)
-                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))*/
                         appState.scope.launch {
                             appState.addQuestionSet(questionSet)
                         }
@@ -278,23 +276,20 @@ fun EditQuestionSetScene(
                 Spacer(Modifier.width(16.dp))
                 Button(
                     onClick = {
-                        val questions: MutableList<Question> = mutableListOf()
-                        questionsString.value.split("\n").forEach {
-                            if (it != "") {
-                                questions.add(Question(it))
-                            }
-                        }
-                        val questionSet = QuestionSet(
-                            name = questionSetName.value,
-                            questions = questions
-                        )
-                        /*questionSetList.removeAt(index)
-                        questionSetList.add(index, questionSet)
-                        appState.settings.putString("questionset", Json.encodeToString<List<QuestionSet>>(questionSetList))*/
                         appState.scope.launch {
+                            val questions: MutableList<Question> = mutableListOf()
+                            questionsString.value.split("\n").forEach {
+                                if (it != "") {
+                                    questions.add(Question(it))
+                                }
+                            }
+                            val questionSet = QuestionSet(
+                                name = questionSetName.value,
+                                questions = questions
+                            )
                             appState.updateQuestionSet(index, questionSet)
+                            onCloseRequest()
                         }
-                        onCloseRequest()
                     },
                     enabled = !isQuestionSetNameError.value && questionSetName.value.isNotBlank()
                 ) {

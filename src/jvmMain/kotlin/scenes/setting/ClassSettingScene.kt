@@ -218,8 +218,6 @@ fun AddClassScene(
                             name = className.value,
                             groups = groups
                         )
-                        /*classList.add(newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                         appState.scope.launch {
                             appState.addClass(newClass)
                         }
@@ -360,9 +358,6 @@ fun EditClassScene(
                             name = className.value,
                             groups = groupList
                         )
-                        /*classList.removeAt(index)
-                        classList.add(index, newClass)
-                        appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                         appState.scope.launch {
                             appState.updateClass(index, newClass)
                         }
@@ -391,8 +386,6 @@ fun EditClassScene(
                     Spacer(Modifier.width(16.dp))
                     Button(
                         onClick = {
-                            /*classList[index].groups.removeAt(dialogState.value)
-                            appState.settings.putString("class", Json.encodeToString<List<Class>>(classList))*/
                             appState.scope.launch {
                                 appState.removeGroup(index, dialogState.value)
                                 dialogState.value = -1
