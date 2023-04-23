@@ -270,7 +270,22 @@ fun EditClassScene(
                     isError = className.value.isBlank(),
                     singleLine = true
                 )
-                Spacer(Modifier.height(32.dp))
+                Spacer(Modifier.height(16.dp))
+                Card(
+                    onClick = { navigator.navigate("/setting/class/$index/group/add") },
+                    modifier = Modifier.height(50.dp)
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        MyText(
+                            text = "添加小组",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+                Spacer(Modifier.height(16.dp))
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(240.dp),
                     modifier = Modifier.fillMaxSize(),
@@ -278,22 +293,6 @@ fun EditClassScene(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    item {
-                        Card(
-                            onClick = { navigator.navigate("/setting/class/$index/group/add") },
-                            modifier = Modifier.height(50.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                MyText(
-                                    text = "添加小组",
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                            }
-                        }
-                    }
                     itemsIndexed(groupList) { groupIndex, it ->
                         val deleteButtonVisibilityState = remember { mutableStateOf(false) }
                         Card(
