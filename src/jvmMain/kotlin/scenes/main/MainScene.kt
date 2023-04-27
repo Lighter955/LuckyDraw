@@ -33,7 +33,8 @@ fun MainScene(
     questionsetIndex: Int,
     navigateBack: () -> Unit,
     groups: MutableList<Group> = appState.classList[classIndex].groups.toMutableList(),
-    questions: List<Question> = appState.questionSetList[questionsetIndex].questions
+    questions: List<Question> = appState.questionSetList[questionsetIndex].questions,
+    groupsMaxSize: Int = groups.size
 ) = MaterialTheme {
     val pickCount = remember { mutableStateOf(0) }
     val canAddPickCount = remember { mutableStateOf(true) }
@@ -101,7 +102,7 @@ fun MainScene(
                 } }
             )
             Row {
-                if (pickCount.value != groups.size) {
+                if (pickCount.value < groupsMaxSize) {
                     TextButton(
                         onClick = { navigateBack() }
                     ) {
@@ -237,19 +238,14 @@ fun Picker(
                 currentItemInfo = lazyListState.layoutInfo.visibleItemsInfo.firstOrNull {
                     (it.offset + it.size / 2 - columnSize.value.height / 2) >= 0
                 }
-            }
-            while (currentItemInfo == null)
-            while (firstOffset.value == null) {
-                delay(50)
-            }
+            } while (currentItemInfo == null)
+            while (firstOffset.value == null) { delay(50) }
             val index = optionList.size * (repeatCount - 1) - 1 + (0..optionList.lastIndex).random()
             beforeAnimation((index) % optionList.size)
             lazyListState.scrollToItem(0, firstOffset.value!!)
             lazyListState.animateScrollBy((index - 1) * currentItemInfo!!.size * 1f, animationSpec)
             afterAnimation()
-            animateState.value = false
-        } else {
-            animateState.value = false
         }
+        animateState.value = false
     }
 }

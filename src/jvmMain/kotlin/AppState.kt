@@ -48,22 +48,15 @@ class AppState(
     }
 
     suspend fun removeGroup(classIndex: Int, groupIndex: Int) {
-        classList[classIndex].groups.removeAt(groupIndex)
         val newClass = classStore.get(classIndex)!!
         newClass.groups.removeAt(groupIndex)
-        classStore.mapIndexed { i, c ->
-            if (i == classIndex) newClass else c
-        }
+        updateClass(classIndex, newClass)
     }
 
     suspend fun updateGroup(classIndex: Int, groupIndex: Int, newGroup: Group) {
-        classList[classIndex].groups.removeAt(groupIndex)
-        classList[classIndex].groups.add(groupIndex, newGroup)
         val newClass = classStore.get(classIndex)!!
         newClass.groups[groupIndex] = newGroup
-        classStore.mapIndexed { i, c ->
-            if (i == classIndex) newClass else c
-        }
+        updateClass(classIndex, newClass)
     }
 
     suspend fun addQuestionSet(q: QuestionSet) {
@@ -87,9 +80,9 @@ class AppState(
 
 @Composable
 fun rememberAppState(
-    appDir: String = AppDirsFactory.getInstance().getUserDataDir("LuckyDraw", "Data", "LightDev"),
-    classStore: KStore<List<Class>> = listStoreOf<Class>("$appDir + class.json"),
-    questionSetStore: KStore<List<QuestionSet>> = listStoreOf<QuestionSet>("$appDir + question.json"),
+    appDir: String = AppDirsFactory.getInstance().getUserDataDir("LuckyDraw", null, "LightDev"),
+    classStore: KStore<List<Class>> = listStoreOf<Class>("$appDir/class.json"),
+    questionSetStore: KStore<List<QuestionSet>> = listStoreOf<QuestionSet>("$appDir/question.json"),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): AppState {
     return rememberSaveable(classStore, questionSetStore) {
