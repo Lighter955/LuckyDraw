@@ -3,3 +3,4 @@
 
 软件截图：
 ![image](https://github.com/lightdev-top/LuckyDraw/assets/56513857/e3e98cd4-2833-431b-b479-6f2fd11d9d55)
+https://github.com/lightdev-top/LuckyDraw/assets/56513857/94a64362-aa2f-48a6-b51d-6e512ee7e892
